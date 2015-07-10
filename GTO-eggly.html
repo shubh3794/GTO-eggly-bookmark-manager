@@ -1,0 +1,77 @@
+<!doctype html>
+<html ng-app="MyFirst">
+<head>category:
+<title>GTO Bookmark Manager-Managing your bookmarks is now easier!</title>
+<meta charset='UTF-8'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+<link rel="text/css" href="Resources/css/normalize.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="Resources/css/GTOeggly.css">
+</head>
+<body ng-controller="MainCtrl as bmc">
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-3 col-md-2 sidebar">
+			<a ng-click="bmc.setCurrentCategory(null)"><img src="Resources/img/eggly-logo.png" class="logo"></a>
+			<ul class="list-inline list-unstyled">
+				<li ng-repeat="category in bmc.categories" ng-class="{'active':bmc.isCurrentCategory(category)}">
+				<a ng-click="bmc.setCurrentCategory(category)">{{category.name}}</a>
+				</li>
+			</ul>
+
+		</div>
+		<div class="col-sm-9 col-md-10 col-sm-offset-3 col-md-offset-2">
+
+		<ul class="main list-unstyled">
+		<li ng-repeat="bookmark in bmc.bookmarks | filter : {category : bmc.currentCategory.name}">
+		<button class="link close pull-right" ng-click="bmc.deletebkm(bookmark)" >x</button>
+		<button class="btn btn-link" ng-click="bmc.setEdited(bookmark);bmc.startEditing()" ><span class="glyphicon glyphicon-pencil"></span></button>
+		<a href="{{bookmark.url}}">{{bookmark.title}}</a>
+		</li>
+		</ul>
+		<hr/>
+		<div ng-if="bmc.shouldShowCreating()">
+			<button class="btn btn-link" ng-click="bmc.startCreating()"><span class="glyphicon glyphicon-plus"></span>
+			Create a bookmark</button>
+			<form class="create-form" novalidate ng-submit="bmc.createbookmark(bmc.newbookmark)" role="form" ng-show="bmc.isCreating">
+			<div class="form-group">
+			<label for ="newbookmarktitle">Bookmark Title</label>
+			<input type="text" placeholder="Enter the title" id="newbookmarktitle" ng-model="bmc.newbookmark.title" class="form-control"/>
+
+			</div>
+			<div class="form-group">
+			<label for ="newbookmarkURL">Bookmark URL</label>
+			<input type="text" placeholder="Enter the URL" id="newbookmarkURL" ng-model="bmc.newbookmark.url" class="form-control"/>
+
+			</div>
+			<button type="submit" class="btn btn-info pull-left btn-lg">save</button>
+			<button type="button" class="btn btn-info pull-right btn-lg" ng-click="bmc.cancelCreating()">cancel</button>
+			</form>
+		</div>
+		<div ng-show="bmc.shouldShowEditing()">
+			<p>Editing bookmark {{bmc.Edited.title}}</p>
+			<form class="create-form" novalidate ng-submit="bmc.UpdateBookmark(bmc.Edited)" role="form" ng-show="bmc.isEditing">
+			<div class="form-group">
+			<label for ="newbookmarktitle">Bookmark Title</label>
+			<input type="text" placeholder="{{bmc.Edited.title}}" id="newbookmarktitle" ng-model="bmc.Edited.title" class="form-control"/>
+
+			</div>
+			<div class="form-group">
+			<label for ="newbookmarkURL">Bookmark URL</label>
+			<input type="text" placeholder="{{bmc.Edited.url}}" id="newbookmarkURL" ng-model="bmc.Edited.url" class="form-control"/>
+
+			</div>
+			<button type="submit" class="btn btn-info pull-left btn-lg">save</button>
+			<button type="button" class="btn btn-info pull-right btn-lg" ng-click="bmc.cancelEditing()">cancel</button>
+			</form>
+		</div>
+	</div></div>
+</div>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+
+        <script src="app/myfirst.js"></script>
+</body>
